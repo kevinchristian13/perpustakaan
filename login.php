@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'koneksi.php';
 
 $message = '';
@@ -13,7 +14,15 @@ if (isset($_POST['login'])) {
 
     if ($result && mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
-        $message = "<div class='alert success'><b>Login Berhasil!</b><br>Selamat datang, " . htmlspecialchars($user['nama_lengkap']) . " (Role: " . htmlspecialchars($user['role']) . ")</div>";
+
+        // Simpan data login ke session
+        $_SESSION['login'] = true;
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['nama'] = $user['nama_lengkap'];
+
+        // Alihkan (redirect) langsung ke halaman pencarian
+        header("Location: pencarian.php");
+        exit;
     } else {
         $message = "<div class='alert error'><b>Login Gagal!</b><br>Username atau password salah.</div>";
     }
@@ -89,26 +98,10 @@ if (isset($_POST['login'])) {
             font-size: 14px;
             margin-bottom: 15px;
         }
-        .alert.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
         .alert.error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
-        }
-        .nav-link {
-            text-align: center;
-            margin-top: 15px;
-            display: block;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .nav-link:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -130,8 +123,6 @@ if (isset($_POST['login'])) {
         </div>
         <button type="submit" name="login" class="btn-login">Login</button>
     </form>
-
-    <a href="pencarian.php" class="nav-link">Ke Halaman Pencarian Buku &rarr;</a>
 </div>
 
 </body>

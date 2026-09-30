@@ -1,5 +1,9 @@
 <?php
+session_start();
 include 'koneksi.php';
+
+// Ambil nama user jika login, atau set default jika tidak ada session
+$nama_user = isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Pengunjung';
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +126,7 @@ include 'koneksi.php';
             align-items: center;
         }
         .footer-nav a {
-            color: #3498db;
+            color: #e74c3c;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
@@ -135,9 +139,10 @@ include 'koneksi.php';
 <body>
 
 <div class="container">
+    <!-- POSISI DIV CLASS HEADER -->
     <div class="header">
         <h2>Katalog Perpustakaan</h2>
-        <p>Cari judul buku yang tersedia dalam koleksi pustaka</p>
+        <p>Selamat datang, <b><?= htmlspecialchars($nama_user) ?></b>! Cari judul buku yang tersedia dalam koleksi pustaka.</p>
     </div>
 
     <form method="GET" action="" class="search-box">
@@ -185,7 +190,7 @@ include 'koneksi.php';
     ?>
 
     <div class="footer-nav">
-        <a href="login.php">&larr; Kembali ke Login</a>
+        <a href="login.php">&larr; Kembali / Logout</a>
     </div>
 </div>
 
